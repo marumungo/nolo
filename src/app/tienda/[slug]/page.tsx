@@ -48,7 +48,7 @@ export default async function ProductPage({
       </Link>
 
       <div className="grid gap-14 lg:grid-cols-2">
-        <div className="bp-tile-blue bp-corners flex aspect-square items-center justify-center border border-nolo-line-blue bg-nolo-blue-soft/40">
+        <div className="bp-tile-blue flex aspect-square items-center justify-center border border-nolo-line-blue bg-nolo-blue-soft/40">
           <Icon className="h-2/3 w-2/3 text-nolo-blue" />
         </div>
 

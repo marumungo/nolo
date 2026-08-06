@@ -156,7 +156,7 @@ export default function Home() {
       {/* Visualizer teaser */}
       <section>
         <div className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
-          <Reveal className="bp-corners flex flex-col items-start justify-between gap-8 border border-nolo-blue bg-nolo-blue-soft/30 p-10 md:flex-row md:items-center md:p-16">
+          <Reveal className="flex flex-col items-start justify-between gap-8 border border-nolo-blue bg-nolo-blue-soft/30 p-10 md:flex-row md:items-center md:p-16">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-nolo-blue">
                 Nuevo

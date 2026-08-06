@@ -78,18 +78,26 @@ body {
 }
 
 /*
- * Same texture as .bp-grid-invert, but WITHOUT the full-bleed centering
- * offset above - for small, fixed-size boxes (like the brand stamp) that
- * already sit box-model-aligned to the page grid on their own. Applying
- * the section-wide offset formula to a box this narrow resolves against
- * the box's own width instead of the page's, producing a different,
- * wrong shift.
+ * Same texture as .bp-grid-invert, for small panels (like the brand stamp)
+ * that sit box-model-aligned to the page grid on their own instead of via
+ * the centering offset above. Below the xl breakpoint the panel's width is
+ * fluid (not a multiple of 40), so a fixed pixel tile would leave a cut
+ * cell at the edge - percentage sizing avoids that. At xl+ the panel has a
+ * fixed 520x400 size that's an exact multiple of 40, so switching to a
+ * fixed 40px tile there makes it read as one continuous grid with the
+ * page instead of two different-scaled ones.
  */
 .bp-grid-invert-panel {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-size: 12.5% 12.5%;
+}
+
+@media (min-width: 1280px) {
+  .bp-grid-invert-panel {
+    background-size: 40px 40px;
+  }
 }
 
 /*
@@ -117,39 +125,6 @@ body {
     linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
   background-size: 12.5% 12.5%;
-}
-
-/* Corner crosshairs, like registration marks on a technical plan. */
-.bp-corners {
-  position: relative;
-}
-.bp-corners::before,
-.bp-corners::after,
-.bp-corners > .bp-corner-tl,
-.bp-corners > .bp-corner-br {
-  content: "";
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  pointer-events: none;
-}
-.bp-corners::before {
-  top: -1px;
-  left: -1px;
-  border-top: 1.5px solid var(--color-nolo-blue);
-  border-left: 1.5px solid var(--color-nolo-blue);
-}
-.bp-corners::after {
-  bottom: -1px;
-  right: -1px;
-  border-bottom: 1.5px solid var(--color-nolo-blue);
-  border-right: 1.5px solid var(--color-nolo-blue);
-}
-
-/* Use alongside .bp-corners on solid nolo-blue backgrounds. */
-.bp-corners-invert::before,
-.bp-corners-invert::after {
-  border-color: var(--color-nolo-paper);
 }
 
 ::selection {

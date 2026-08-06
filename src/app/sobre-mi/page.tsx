@@ -51,7 +51,7 @@ export default function SobreMiPage() {
 
           <Reveal
             delay={120}
-            className="bp-tile-invert bp-corners bp-corners-invert flex items-center justify-center bg-nolo-blue p-10"
+            className="bp-tile-invert flex items-center justify-center bg-nolo-blue p-10"
           >
             <ModuleBlueprint className="h-full max-h-80 w-full text-white" />
           </Reveal>
