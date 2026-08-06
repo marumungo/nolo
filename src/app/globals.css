@@ -1,26 +1,191 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fefefe;
+  --foreground: #0a0a0f;
+
+  --color-nolo-blue: #1c1cff;
+  --color-nolo-blue-soft: #eef0ff;
+  --color-nolo-ink: #0a0a0f;
+  --color-nolo-paper: #fefefe;
+  --color-nolo-line: rgba(10, 10, 15, 0.12);
+  --color-nolo-line-blue: rgba(28, 28, 255, 0.18);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-nolo-blue: var(--color-nolo-blue);
+  --color-nolo-blue-soft: var(--color-nolo-blue-soft);
+  --color-nolo-ink: var(--color-nolo-ink);
+  --color-nolo-paper: var(--color-nolo-paper);
+  --color-nolo-line: var(--color-nolo-line);
+  --color-nolo-line-blue: var(--color-nolo-line-blue);
+
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-space-grotesk);
+  --font-mono: var(--font-space-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/*
+ * Blueprint graph-paper texture. Painted full-bleed on the outer section
+ * (edge to edge of the screen), but phase-shifted at the max-w-7xl
+ * breakpoint so its lines still land exactly on the centered content
+ * container's edges once the container stops filling the viewport -
+ * full-width coverage and grid-locked content at the same time.
+ */
+.bp-grid {
+  background-image:
+    linear-gradient(var(--color-nolo-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-nolo-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.bp-grid-blue {
+  background-image:
+    linear-gradient(var(--color-nolo-line-blue) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-nolo-line-blue) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Same grid, in white, for use on solid nolo-blue backgrounds. */
+.bp-grid-invert {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+@media (min-width: 1280px) {
+  /*
+   * background-position percentages resolve against (container - tile),
+   * not the full container - with a 40px tile that bakes in an extra
+   * -20px (half a tile) versus naive "container/2" math, so the offset
+   * here is -620px, not -640px, to actually land the lines where the
+   * centered max-w-7xl content edge is.
+   */
+  .bp-grid,
+  .bp-grid-blue {
+    background-position: calc(50% - 620px) 0;
+  }
+}
+
+/*
+ * Same texture as .bp-grid-invert, but WITHOUT the full-bleed centering
+ * offset above - for small, fixed-size boxes (like the brand stamp) that
+ * already sit box-model-aligned to the page grid on their own. Applying
+ * the section-wide offset formula to a box this narrow resolves against
+ * the box's own width instead of the page's, producing a different,
+ * wrong shift.
+ */
+.bp-grid-invert-panel {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/*
+ * "Tile" variants: same texture, but sized as a percentage of the box
+ * instead of a fixed pixel value. Used on bounded, hard-edged panels
+ * (cards, stamps) so the grid always divides into whole cells - a fixed
+ * px size leaves a cut-off partial cell at the edge on most box widths.
+ */
+.bp-tile {
+  background-image:
+    linear-gradient(var(--color-nolo-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-nolo-line) 1px, transparent 1px);
+  background-size: 12.5% 12.5%;
+}
+
+.bp-tile-blue {
+  background-image:
+    linear-gradient(var(--color-nolo-line-blue) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-nolo-line-blue) 1px, transparent 1px);
+  background-size: 12.5% 12.5%;
+}
+
+.bp-tile-invert {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+  background-size: 12.5% 12.5%;
+}
+
+/* Corner crosshairs, like registration marks on a technical plan. */
+.bp-corners {
+  position: relative;
+}
+.bp-corners::before,
+.bp-corners::after,
+.bp-corners > .bp-corner-tl,
+.bp-corners > .bp-corner-br {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+.bp-corners::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1.5px solid var(--color-nolo-blue);
+  border-left: 1.5px solid var(--color-nolo-blue);
+}
+.bp-corners::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1.5px solid var(--color-nolo-blue);
+  border-right: 1.5px solid var(--color-nolo-blue);
+}
+
+/* Use alongside .bp-corners on solid nolo-blue backgrounds. */
+.bp-corners-invert::before,
+.bp-corners-invert::after {
+  border-color: var(--color-nolo-paper);
+}
+
+::selection {
+  background: var(--color-nolo-blue);
+  color: var(--color-nolo-paper);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal {
+  opacity: 0;
+}
+.reveal.is-visible {
+  animation: reveal-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
